@@ -6,6 +6,7 @@
 
 /dts-v1/;
 #include "peach.dtsi"
+#include <dt-bindings/led/led.h>
 
 
 / {
@@ -13,6 +14,7 @@
 		zmk,kscan = &kscan0;
 		zmk,matrix_transform = &default_transform;
 		zmk,underglow = &led_strip;
+		zmk,battery = &vbatt;
 	};
 
 	default_transform: keymap_transform_0 {
@@ -76,7 +78,7 @@
 		control-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
 	};
 
-	vbatt {
+	vbatt: vbatt {
 		compatible = "zmk,battery-voltage-divider";
 		label = "BATTERY";
 		io-channels = <&adc 3>;
@@ -86,6 +88,8 @@
 };
 
 &spi1 {
+  status = "okay";
+
   mosi-pin = <4>;
   // Unused pins, needed for SPI definition, but not used by the ws2812 driver itself.
   sck-pin = <6>;
@@ -103,5 +107,6 @@
     chain-length = <20>; /* number of LEDs */
     spi-one-frame = <0x70>;
     spi-zero-frame = <0x40>;
+    color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
   };
 };
